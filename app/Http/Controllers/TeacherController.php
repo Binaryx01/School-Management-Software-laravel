@@ -7,11 +7,12 @@ use App\Models\Teacher;
 
 class TeacherController extends Controller
 {
-    public function index()
+     public function index()
     {
-        $teachers = Teacher::latest()->get();
-        return view('teachers.index', compact('teachers'));
+    $teachers = Teacher::orderBy('first_name')->paginate(10); // Adjust 10 as needed
+    return view('teachers.index', compact('teachers'));
     }
+
 
     public function store(Request $request)
     {

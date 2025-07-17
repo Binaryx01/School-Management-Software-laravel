@@ -1,67 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Sutra</title>
+    <title>@yield('title', 'Dashboard') | School Sutra</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: #fff0f0;
         }
         .sidebar {
+            width: 200px;
             height: 100vh;
-            background: #fff;
-            padding: 20px;
-            border-right: 2px solid #dc3545;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background-color: white;
+            color: #dc3545;
+            padding-top: 60px;
         }
-        .sidebar a {
+        .sidebar h4 {
+            padding-left: 1.5rem;
+            color: #dc3545;
+            font-weight: 700;
+        }
+        .sidebar .nav-link {
+            padding: 12px 20px;
             display: block;
             color: #dc3545;
-            margin-bottom: 10px;
-            text-decoration: none;
             font-weight: 500;
+            transition: background-color 0.3s, color 0.3s;
         }
-        .sidebar a:hover {
-            text-decoration: underline;
+        .sidebar .nav-link:hover {
+            background-color: #fde0e0;
+            color: #a71d2a;
+            border-radius: 6px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding-top: 60px;
+        }
+
+        .navbar-custom {
+            background-color: #dc3545;
+        }
+        .navbar-custom .navbar-brand,
+        .navbar-custom .btn {
+            color: white;
+        }
+        .navbar-custom .btn:hover {
+            background-color: #fff;
+            color: #dc3545;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                padding-top: 10px;
+            }
+            .main-content {
+                margin-left: 0;
+                padding-top: 20px;
+            }
         }
     </style>
+    @stack('styles')
 </head>
 <body>
-    <div class="d-flex">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <h4 class="text-danger">School Sutra</h4>
-            <a href="/dashboard">Dashboard</a>
-            <a href="/teachers">Teachers</a>
-            <a href="#">Students</a>
-            <a href="#">Classes</a>
-            <a href="#">Exams</a>
-        </div>
 
-        <!-- Page Content -->
-        <div class="flex-grow-1">
-   <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
-    <div class="container-fluid">
-        <span class="navbar-brand text-danger fw-bold">Dashboard</span>
-        <div class="ms-auto">
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-inline">
-                @csrf
-                <button type="submit" class="btn btn-outline-danger">Logout</button>
-            </form>
-        </div>
-    </div>
-</nav>
-
-            <!-- Main Content -->
-            <main class="p-4">
-                @yield('content')
-            </main>
-        </div>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h4>School Sutra</h4>
+        <ul class="nav flex-column mt-4">
+            <li><a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li><a class="nav-link" href="{{ route('teachers.index') }}">Teachers</a></li>
+            <li><a class="nav-link" href="#">Students</a></li>
+            <li><a class="nav-link" href="#">Classes</a></li>
+            <li><a class="nav-link" href="#">Exams</a></li>
+        </ul>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Main Content -->
+    <div class="main-content">
+        <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Dashboard</a>
+                <div class="ms-auto">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-light">Logout</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container py-5">
+            @yield('content')
+        </div>
+    </div>
+
+    @stack('scripts')
 </body>
 </html>
