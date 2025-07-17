@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TeacherController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,3 +23,12 @@ Route::get('/dashboard', function () {
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+
+// Teacher routes
+
+Route::resource('teachers', TeacherController::class);
+
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+

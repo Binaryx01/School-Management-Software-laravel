@@ -79,7 +79,7 @@
         <h4>School Sutra</h4>
         <ul class="nav flex-column mt-4">
             <li><a class="nav-link" href="#">Dashboard</a></li>
-            <li><a class="nav-link" href="#">Teachers</a></li>
+            <li><a class="nav-link" href="{{ route('teachers.index')}}">Teachers</a></li>
             <li><a class="nav-link" href="#">Students</a></li>
             <li><a class="nav-link" href="#">Classes</a></li>
             <li><a class="nav-link" href="#">Exams</a></li>
