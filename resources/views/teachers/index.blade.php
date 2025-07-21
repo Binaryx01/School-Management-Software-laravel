@@ -147,6 +147,22 @@
     <div class="card shadow-sm border-danger">
         <div class="card-header bg-danger text-white fw-semibold fs-5">📋 Teacher List</div>
         <div class="card-body p-0">
+
+            <form method="GET" action="{{ route('teachers.index') }}" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Search teachers..." value="{{ request('search') }}">
+            <button class="btn btn-outline-danger" type="submit">Search</button>
+            @if(request('search'))
+            <a href="{{ route('teachers.index') }}" class="btn btn-outline-secondary">Reset</a>
+            @endif
+        </div>
+        </form>
+
+
+
+
+
+
             <div class="table-responsive">
                 <table class="table table-striped table-hover align-middle text-center mb-0">
                     <thead class="table-light">
