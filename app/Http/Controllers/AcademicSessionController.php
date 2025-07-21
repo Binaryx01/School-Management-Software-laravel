@@ -7,6 +7,15 @@ use App\Models\AcademicSession;
 
 class AcademicSessionController extends Controller
 {
+
+     public function index()
+    {
+        $sessions = AcademicSession::all();
+        return view('academic_sessions.index', compact('sessions'));
+    }
+
+
+
     public function store(Request $request)
     {
         $request->validate([

@@ -22,6 +22,7 @@
             padding-left: 1.5rem;
             color: #dc3545;
             font-weight: 700;
+            margin-top: 20px;
         }
         .sidebar .nav-link {
             padding: 12px 20px;
@@ -34,6 +35,12 @@
             background-color: #fde0e0;
             color: #a71d2a;
             border-radius: 6px;
+        }
+        .sidebar .nav-link.active {
+            background-color: #a71d2a; /* Dark red */
+            color: #fff !important;
+            border-radius: 6px;
+            font-weight: 700;
         }
 
         .main-content {
@@ -73,15 +80,38 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <h4>School Sutra</h4>
-        <ul class="nav flex-column mt-4">
-            <li><a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li><a class="nav-link" href="{{ route('teachers.index') }}">Teachers</a></li>
-            <li><a class="nav-link" href="{{route('students.create')}}">Students</a></li>
 
-            <li><a class="nav-link" href="#">Classes</a></li>
-            <li><a class="nav-link" href="#">Exams</a></li>
+        <ul class="nav flex-column mt-4">
+            <li>
+                <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">Dashboard</a>
+            </li>
+            <li>
+                <a class="nav-link {{ request()->routeIs('academic_sessions.*') ? 'active' : '' }}" href="{{ route('academic_sessions.index') }}">Sessions</a>
+            </li>
+            <li>
+                <a class="nav-link {{ request()->routeIs('teachers.*') ? 'active' : '' }}" href="{{ route('teachers.index') }}">Teachers</a>
+            </li>
+            <li>
+                <a class="nav-link {{ request()->routeIs('students.*') ? 'active' : '' }}" href="{{ route('students.create') }}">Students</a>
+            </li>
+            <li>
+                <a class="nav-link {{ request()->routeIs('classes.*') ? 'active' : '' }}" href="{{route('classes.index')}}">Classes</a>
+            </li>
+            <li>
+                <a class="nav-link {{ request()->routeIs('exams.*') ? 'active' : '' }}" href="#">Exams</a>
+            </li>
         </ul>
     </div>
+
+    @php
+    $activeSession = \App\Models\AcademicSession::where('is_active', true)->first();
+    @endphp
+
+    @if ($activeSession)
+        <div class="text-end me-3">
+            <span class="badge bg-danger">Session: {{ $activeSession->name }}</span>
+        </div>
+    @endif
 
     <!-- Main Content -->
     <div class="main-content">

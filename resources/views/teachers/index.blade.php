@@ -1,3 +1,16 @@
+@php
+    $activeSession = \App\Models\AcademicSession::where('is_active', true)->first();
+@endphp
+
+@if($activeSession)
+    <div class="alert alert-info">
+        <strong>Active Academic Session:</strong> {{ $activeSession->name }}
+    </div>
+@endif
+
+
+
+
 @extends('layouts.app')
 
 @section('content')
