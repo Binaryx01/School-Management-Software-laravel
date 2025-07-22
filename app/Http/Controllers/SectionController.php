@@ -39,4 +39,27 @@ class SectionController extends Controller
 
         return redirect()->back()->with('success', 'Section deleted successfully.');
     }
+
+    public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'class_id' => 'required|exists:school_classes,id',
+    ]);
+
+    \App\Models\Section::create([
+        'name' => $request->name,
+        'school_class_id' => $request->class_id,
+    ]);
+
+    return redirect()->back()->with('success', 'Section added successfully.');
+}
+
+
+
+
+
+
+
+
 }

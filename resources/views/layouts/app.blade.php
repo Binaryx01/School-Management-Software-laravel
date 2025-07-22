@@ -95,7 +95,7 @@
                 <a class="nav-link {{ request()->routeIs('students.*') ? 'active' : '' }}" href="{{ route('students.create') }}">Students</a>
             </li>
             <li>
-                <a class="nav-link {{ request()->routeIs('classes.*') ? 'active' : '' }}" href="{{route('classes.index')}}">Classes</a>
+                <a class="nav-link {{ request()->routeIs('classes.*') ? 'active' : '' }}" href="{{ route('classes.index') }}">Classes</a>
             </li>
             <li>
                 <a class="nav-link {{ request()->routeIs('exams.*') ? 'active' : '' }}" href="#">Exams</a>
