@@ -11,16 +11,30 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('students', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->unsignedBigInteger('academic_session_id');
-            $table->timestamps();
+        Schema::table('students', function (Blueprint $table) {
+            // New student fields
+            $table->string('first_name')->nullable()->after('name');
+            $table->string('last_name')->nullable()->after('first_name');
+            $table->string('father_name')->nullable();
+            $table->date('dob')->nullable();
+            $table->enum('gender', ['male', 'female', 'other'])->nullable();
+            $table->unsignedBigInteger('class_id')->nullable();
+            $table->unsignedBigInteger('section_id')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->text('address')->nullable();
+            $table->string('city')->nullable();
 
-        $table->foreign('academic_session_id')
-              ->references('id')
-              ->on('academic_sessions')
-              ->onDelete('cascade');
+            // Guardian fields
+            $table->string('guardian_name')->nullable();
+            $table->string('guardian_phone')->nullable();
+            $table->text('guardian_address')->nullable();
+            $table->string('guardian_city')->nullable();
+            $table->string('guardian_relationship')->nullable();
+
+            // Foreign keys (optional, ensure `classes` and `sections` tables exist)
+            $table->foreign('class_id')->references('id')->on('classes')->onDelete('set null');
+            $table->foreign('section_id')->references('id')->on('sections')->onDelete('set null');
         });
     }
 
@@ -29,6 +43,28 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('students');
+        Schema::table('students', function (Blueprint $table) {
+            $table->dropForeign(['class_id']);
+            $table->dropForeign(['section_id']);
+
+            $table->dropColumn([
+                'first_name',
+                'last_name',
+                'father_name',
+                'dob',
+                'gender',
+                'class_id',
+                'section_id',
+                'phone',
+                'email',
+                'address',
+                'city',
+                'guardian_name',
+                'guardian_phone',
+                'guardian_address',
+                'guardian_city',
+                'guardian_relationship',
+            ]);
+        });
     }
 };

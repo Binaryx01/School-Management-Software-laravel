@@ -7,30 +7,39 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
+        'first_name',
+        'last_name',
         'name',
-        'academic_session_id',
+        'father_name',
+        'dob',
+        'gender',
         'school_class_id',
         'section_id',
+        'phone',
+        'email',
+        'city',
+        'address',
+        'guardian_name',
+        'guardian_phone',
+        'guardian_city',
+        'guardian_relationship',
+        'guardian_address',
+        'academic_session_id',
     ];
 
-    // Relationship to AcademicSession
-    public function academicSession()
-    {
-        return $this->belongsTo(AcademicSession::class);
-    }
-
-    // Relationship to SchoolClass
     public function schoolClass()
     {
         return $this->belongsTo(SchoolClass::class);
     }
 
-    // Relationship to Section
     public function section()
     {
         return $this->belongsTo(Section::class);
+    }
+
+    public function academicSession()
+    {
+        return $this->belongsTo(AcademicSession::class);
     }
 }
