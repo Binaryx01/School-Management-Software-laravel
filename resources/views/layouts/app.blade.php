@@ -1,12 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@yield('title', 'Dashboard') | School Sutra</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+    {{-- Bootstrap CSS --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    {{-- jQuery --}}
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    {{-- Bootstrap JS Bundle --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <style>
         body {
@@ -21,6 +27,7 @@
             background-color: white;
             color: #dc3545;
             padding-top: 60px;
+            overflow-y: auto;
         }
         .sidebar h4 {
             padding-left: 1.5rem;
@@ -34,11 +41,13 @@
             color: #dc3545;
             font-weight: 500;
             transition: background-color 0.3s, color 0.3s;
+            white-space: nowrap;
         }
         .sidebar .nav-link:hover {
             background-color: #fde0e0;
             color: #a71d2a;
             border-radius: 6px;
+            text-decoration: none;
         }
         .sidebar .nav-link.active {
             background-color: #a71d2a; /* Dark red */
@@ -48,8 +57,9 @@
         }
 
         .main-content {
-            margin-left: 250px;
+            margin-left: 200px;
             padding-top: 60px;
+            min-height: 100vh;
         }
 
         .navbar-custom {
@@ -77,11 +87,12 @@
             }
         }
     </style>
+
     @stack('styles')
 </head>
 <body>
 
-    <!-- Sidebar -->
+    {{-- Sidebar --}}
     <div class="sidebar">
         <h4>School Sutra</h4>
 
@@ -107,25 +118,37 @@
         </ul>
     </div>
 
+    {{-- Active Session Badge --}}
     @php
-    $activeSession = \App\Models\AcademicSession::where('is_active', true)->first();
+        $activeSessionId = session('active_academic_session_id');
+        $activeSession = null;
+        if ($activeSessionId) {
+            $activeSession = \App\Models\AcademicSession::find($activeSessionId);
+        } else {
+            $activeSession = \App\Models\AcademicSession::where('is_active', true)->first();
+            if ($activeSession) {
+                session(['active_academic_session_id' => $activeSession->id]);
+            }
+        }
     @endphp
 
     @if ($activeSession)
-        <div class="text-end me-3">
-            <span class="badge bg-danger">Session: {{ $activeSession->name }}</span>
+        <div class="text-end me-3 position-fixed" style="right: 0; top: 10px; z-index: 1050;">
+            <span class="badge bg-danger fs-6 px-3 py-2" style="font-weight: 600;">
+                Active Session: {{ $activeSession->name }}
+            </span>
         </div>
     @endif
 
-    <!-- Main Content -->
+    {{-- Main Content --}}
     <div class="main-content">
         <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">Dashboard</a>
+                <a class="navbar-brand" href="{{ route('dashboard') }}">Dashboard</a>
                 <div class="ms-auto">
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="btn btn-outline-light">Logout</button>
+                        <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
                     </form>
                 </div>
             </div>

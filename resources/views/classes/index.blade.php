@@ -1,6 +1,3 @@
-
-
-
 @php
     $activeSession = \App\Models\AcademicSession::where('is_active', true)->first();
 @endphp
@@ -57,7 +54,10 @@
                         <!-- Class title and +Add Section button -->
                         <div class="d-flex justify-content-between align-items-start mb-2">
                             <div>
-                                <h5 class="mb-0">{{ $class->name }}</h5>
+                                <h5 class="mb-0">
+                                    {{ $class->name }}
+                                    <small class="text-muted">({{ $class->students_count ?? 0 }} students)</small>
+                                </h5>
                                 <!-- Class Edit/Delete -->
                                 <div class="mt-2">
                                     <a href="{{ route('classes.edit', $class->id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
@@ -82,7 +82,10 @@
                             <ul class="list-group">
                                 @foreach($class->sections as $section)
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        {{ $section->name }}
+                                        <div>
+                                            {{ $section->name }}
+                                            <small class="text-muted">({{ $section->students_count ?? 0 }} students)</small>
+                                        </div>
                                         <span>
                                             <a href="{{ route('sections.edit', $section->id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
                                             <form action="{{ route('sections.destroy', $section->id) }}" method="POST" class="d-inline"

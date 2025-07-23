@@ -13,6 +13,14 @@ class SchoolClass extends Model
         return $this->hasMany(Section::class);
     }
 
+        public function students()
+    {
+    // Students directly assigned to this class (if applicable)
+    return $this->hasMany(Student::class);  
+    }
+
+
+
     public function schoolClass()
     {
         return $this->belongsTo(SchoolClass::class);

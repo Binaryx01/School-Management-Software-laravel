@@ -19,7 +19,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    <h3 class="mb-4">Welcome, {{ session('user_email') }}</h3>
+    <h3 class="mb-4">Welcome, {{ session('user_email'), }} set the session first</h3>
     <p class="lead">You are logged into your dashboard. Use the sidebar to access different sections of the School Sutra system.</p>
 
    

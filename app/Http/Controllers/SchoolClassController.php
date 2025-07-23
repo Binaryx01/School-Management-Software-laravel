@@ -9,12 +9,14 @@ use App\Models\AcademicSession;
 
 class SchoolClassController extends Controller
 {
-    // Show list of classes
+    // Show list of classes with student counts and sections with student counts
     public function index()
     {
-       // $classes = SchoolClass::with('sections')->get();
-       //$classes = SchoolClass::with('sections')->distinct()->get();
-        $classes = SchoolClass::with('sections')->get()->unique('id')->values();
+        $classes = SchoolClass::withCount('students') // Count students per class
+            ->with(['sections' => function ($query) {
+                $query->withCount('students'); // Count students per section
+            }])
+            ->get();
 
         return view('classes.index', compact('classes'));
     }
