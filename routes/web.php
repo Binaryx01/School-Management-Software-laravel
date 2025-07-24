@@ -54,3 +54,4 @@ Route::prefix('sections')->name('sections.')->group(function () {
 Route::resource('sections', SectionController::class)->only(['store', 'edit', 'update', 'destroy']);
 Route::resource('classes', \App\Http\Controllers\SchoolClassController::class);
 
+

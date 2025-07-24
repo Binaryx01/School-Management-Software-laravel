@@ -49,6 +49,13 @@ class TeacherController extends Controller
         return redirect()->route('teachers.index')->with('success', 'Teacher added successfully!');
     }
 
+
+    public function create()
+    {
+
+        return view('teachers.create');
+    }
+
     public function destroy($id)
     {
         Teacher::destroy($id);

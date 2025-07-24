@@ -2,237 +2,239 @@
     $activeSession = \App\Models\AcademicSession::where('is_active', true)->first();
 @endphp
 
-@if($activeSession)
-    <div class="alert alert-info">
-        <strong>Active Academic Session:</strong> {{ $activeSession->name }}
-    </div>
-@endif
-
-
-
-
 @extends('layouts.app')
 
-@section('content')
-<div class="container mt-2">
-    <h3 class="text-danger fw-bold mb-4 text-center">👩‍🏫 Manage Teachers</h3>
+@section('title', 'Teacher Management')
 
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+@section('content')
+<div class="container-fluid px-4">
+    <!-- Session Alert -->
+    @if($activeSession)
+    <div class="alert alert-danger d-flex align-items-center mb-4">
+        <i class="fas fa-calendar-alt fa-2x me-3"></i>
+        <div>
+            <h5 class="alert-heading mb-1">Active Session</h5>
+            <p class="mb-0">{{ $activeSession->name }}</p>
         </div>
+    </div>
     @endif
 
-    <style>
-        /* Custom red pagination */
-        .pagination .page-link {
-            color: white;
-            background-color: #dc3545;
-            border-color: #dc3545;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-        .pagination .page-link:hover {
-            background-color: #bb2d3b;
-            border-color: #bb2d3b;
-            color: #fff;
-        }
-        .pagination .page-item.active .page-link {
-            background-color: #a71d2a;
-            border-color: #a71d2a;
-            color: #fff;
-        }
-        .pagination .page-item.disabled .page-link {
-            background-color: #f8d7da;
-            border-color: #f5c2c7;
-            color: #842029;
-        }
-
-        /* Table hover effect */
-        table.table-hover tbody tr:hover {
-            background-color: #ffe6e6;
-        }
-
-        /* Form card */
-        .form-card {
-            background-color: #fff6f6;
-            border: 1px solid #dc3545;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.15);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        /* Buttons */
-        .btn-outline-primary:hover {
-            background-color: #dc3545;
-            color: white !important;
-            border-color: #dc3545 !important;
-        }
-
-        .btn-outline-danger:hover {
-            background-color: #a71d2a;
-            color: white !important;
-            border-color: #a71d2a !important;
-        }
-
-        /* Form inputs spacing */
-        .form-control, .form-select {
-            box-shadow: none;
-            border-color: #dc3545;
-            transition: border-color 0.3s;
-        }
-        .form-control:focus, .form-select:focus {
-            border-color: #a71d2a;
-            box-shadow: 0 0 5px rgba(167, 29, 42, 0.5);
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 575.98px) {
-            .d-flex.gap-1.justify-content-center {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            .d-flex.gap-1.justify-content-center form {
-                width: 100%;
-            }
-        }
-    </style>
-
-    <!-- Add Teacher Form -->
-    <div class="form-card">
-        <h5 class="text-danger fw-semibold mb-3">➕ Add New Teacher</h5>
-        <form action="{{ route('teachers.store') }}" method="POST" autocomplete="off">
-            @csrf
-            <div class="row g-3">
-                <div class="col-md-3">
-                    <input type="text" name="first_name" class="form-control" placeholder="First Name" required>
-                </div>
-                <div class="col-md-3">
-                    <input type="text" name="last_name" class="form-control" placeholder="Last Name" required>
-                </div>
-                <div class="col-md-2">
-                    <select name="gender" class="form-select" required>
-                        <option value="" selected disabled>Gender</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <input type="date" name="date_of_birth" class="form-control" required>
-                </div>
-                <div class="col-md-2">
-                    <input type="text" name="phone" class="form-control" placeholder="Phone" required>
-                </div>
-                <div class="col-md-4">
-                    <input type="email" name="email" class="form-control" placeholder="Email" required>
-                </div>
-                <div class="col-md-4">
-                    <input type="text" name="address" class="form-control" placeholder="Address">
-                </div>
-                <div class="col-md-4">
-                    <input type="text" name="city" class="form-control" placeholder="City">
-                </div>
-                <div class="col-md-3">
-                    <input type="text" name="guardian_name" class="form-control" placeholder="Guardian Name">
-                </div>
-                <div class="col-md-3">
-                    <input type="text" name="guardian_phone" class="form-control" placeholder="Guardian Phone">
-                </div>
-                <div class="col-md-3">
-                    <input type="text" name="guardian_address" class="form-control" placeholder="Guardian Address">
-                </div>
-                <div class="col-md-3">
-                    <input type="text" name="guardian_city" class="form-control" placeholder="Guardian City">
-                </div>
-                <div class="col-md-3">
-                    <input type="text" name="relation_to_teacher" class="form-control" placeholder="Relation">
-                </div>
-                <div class="col-md-2 d-grid">
-                    <button type="submit" class="btn btn-danger fw-semibold">Add Teacher</button>
-                </div>
-            </div>
-        </form>
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold text-danger mb-1">
+                <i class="fas fa-chalkboard-teacher me-2"></i>Teacher Management
+            </h1>
+            <p class="text-muted mb-0">Manage all teacher records and information</p>
+        </div>
+        <a href="{{ route('teachers.create') }}" class="btn btn-danger btn-lg px-4">
+            <i class="fas fa-plus me-2"></i> Add Teacher
+        </a>
     </div>
 
-    <!-- List of Teachers -->
-    <div class="card shadow-sm border-danger">
-        <div class="card-header bg-danger text-white fw-semibold fs-5">📋 Teacher List</div>
-        <div class="card-body p-0">
-
-            <form method="GET" action="{{ route('teachers.index') }}" class="mb-3">
-        <div class="input-group">
-            <input type="text" name="search" class="form-control" placeholder="Search teachers..." value="{{ request('search') }}">
-            <button class="btn btn-outline-danger" type="submit">Search</button>
-            @if(request('search'))
-            <a href="{{ route('teachers.index') }}" class="btn btn-outline-secondary">Reset</a>
-            @endif
+    <!-- Success Message -->
+    @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show mb-4">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-check-circle fa-2x me-3"></i>
+            <div>
+                <h5 class="mb-1">Success!</h5>
+                <p class="mb-0">{{ session('success') }}</p>
+            </div>
         </div>
-        </form>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @endif
 
+    <!-- Search Card -->
+    <div class="card border-danger mb-4 shadow">
+        <div class="card-header bg-danger text-white py-3">
+            <h5 class="mb-0">
+                <i class="fas fa-search me-2"></i>Search Teachers
+            </h5>
+        </div>
+        <div class="card-body">
+            <form method="GET" action="{{ route('teachers.index') }}">
+                <div class="input-group input-group-lg">
+                    <input type="text" name="search" class="form-control form-control-lg" 
+                           placeholder="Search by name, email or phone..." 
+                           value="{{ request('search') }}">
+                    <button class="btn btn-danger" type="submit">
+                        <i class="fas fa-search me-2"></i> Search
+                    </button>
+                    @if(request('search'))
+                    <a href="{{ route('teachers.index') }}" class="btn btn-outline-danger">
+                        <i class="fas fa-times me-2"></i> Clear
+                    </a>
+                    @endif
+                </div>
+            </form>
+        </div>
+    </div>
 
-
-
-
-
+    <!-- Teachers Table -->
+    <div class="card border-danger shadow">
+        <div class="card-header bg-danger text-white py-3 d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+                <i class="fas fa-list-ol me-2"></i>Teacher Directory
+            </h5>
+            <span class="badge bg-white text-danger fs-6">
+                {{ $teachers->total() }} {{ Str::plural('Teacher', $teachers->total()) }}
+            </span>
+        </div>
+        
+        <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-striped table-hover align-middle text-center mb-0">
-                    <thead class="table-light">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-danger">
                         <tr>
-                            <th>Name</th>
-                            <th>Gender</th>
-                            <th>DOB</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Address</th>
-                            <th>City</th>
-                            <th>Guardian</th>
-                            <th>G. Phone</th>
-                            <th>G. Address</th>
-                            <th>G. City</th>
-                            <th>Relation</th>
-                            <th>Action</th>
+                            <th class="ps-4">Teacher</th>
+                            <th>Contact</th>
+                            <th>Details</th>
+                            <th class="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($teachers as $teacher)
                         <tr>
-                            <td>{{ $teacher->first_name }} {{ $teacher->last_name }}</td>
-                            <td>{{ $teacher->gender }}</td>
-                            <td>{{ \Carbon\Carbon::parse($teacher->date_of_birth)->format('d M, Y') }}</td>
-                            <td>{{ $teacher->phone }}</td>
-                            <td>{{ $teacher->email }}</td>
-                            <td>{{ $teacher->address }}</td>
-                            <td>{{ $teacher->city }}</td>
-                            <td>{{ $teacher->guardian_name }}</td>
-                            <td>{{ $teacher->guardian_phone }}</td>
-                            <td>{{ $teacher->guardian_address }}</td>
-                            <td>{{ $teacher->guardian_city }}</td>
-                            <td>{{ $teacher->relation_to_teacher }}</td>
-                            <td class="d-flex gap-2 justify-content-center">
-                                <a href="{{ route('teachers.edit', $teacher->id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
-                                <form method="POST" action="{{ route('teachers.destroy', $teacher->id) }}" onsubmit="return confirm('Are you sure?')" style="margin: 0;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
-                                </form>
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="symbol symbol-50px me-3">
+                                        <span class="symbol-label bg-danger bg-opacity-10 text-danger fs-3 fw-bold">
+                                            {{ substr($teacher->first_name, 0, 1) }}{{ substr($teacher->last_name, 0, 1) }}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1 fw-bold">{{ $teacher->first_name }} {{ $teacher->last_name }}</h6>
+                                        <div class="text-muted">
+                                            <i class="fas fa-{{ strtolower($teacher->gender) == 'male' ? 'male' : 'female' }} me-1"></i>
+                                            {{ $teacher->gender }} | 
+                                            {{ \Carbon\Carbon::parse($teacher->date_of_birth)->age }} years
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-column">
+                                    <a href="tel:{{ $teacher->phone }}" class="text-dark text-hover-danger mb-1">
+                                        <i class="fas fa-phone me-2"></i>{{ $teacher->phone }}
+                                    </a>
+                                    <a href="mailto:{{ $teacher->email }}" class="text-dark text-hover-danger">
+                                        <i class="fas fa-envelope me-2"></i>{{ $teacher->email }}
+                                    </a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-column">
+                                    <span class="mb-1">
+                                        <i class="fas fa-map-marker-alt me-2 text-danger"></i>{{ $teacher->city }}
+                                    </span>
+                                    @if($teacher->guardian_name)
+                                    <span>
+                                        <i class="fas fa-user-shield me-2 text-danger"></i>{{ $teacher->guardian_name }}
+                                    </span>
+                                    @endif
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <a href="{{ route('teachers.edit', $teacher->id) }}" 
+                                       class="btn btn-sm btn-outline-danger px-3" 
+                                       data-bs-toggle="tooltip" 
+                                       title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{ route('teachers.destroy', $teacher->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" 
+                                                class="btn btn-sm btn-danger px-3"
+                                                data-bs-toggle="tooltip"
+                                                title="Delete"
+                                                onclick="return confirm('Are you sure you want to delete this teacher?')">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                    <a href="#" 
+                                       class="btn btn-sm btn-outline-secondary px-3"
+                                       data-bs-toggle="tooltip"
+                                       title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="13" class="text-center text-muted py-4">No teachers found.</td>
+                            <td colspan="4" class="text-center py-5">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="fas fa-user-slash fa-3x text-muted mb-3"></i>
+                                    <h5 class="text-muted">No Teachers Found</h5>
+                                    <a href="{{ route('teachers.create') }}" class="btn btn-danger mt-3">
+                                        <i class="fas fa-plus me-2"></i>Add First Teacher
+                                    </a>
+                                </div>
+                            </td>
                         </tr>
                         @endforelse
                     </tbody>
                 </table>
-
-                <div class="d-flex justify-content-center my-4">
-                    {{ $teachers->links('pagination::bootstrap-5') }}
-                </div>
-
             </div>
         </div>
+
+        @if($teachers->hasPages())
+        <div class="card-footer bg-danger bg-opacity-10">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="text-muted">
+                    Showing {{ $teachers->firstItem() }} to {{ $teachers->lastItem() }} of {{ $teachers->total() }} entries
+                </div>
+                <div>
+                    {{ $teachers->withQueryString()->links('pagination::bootstrap-5') }}
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 </div>
+
+@push('styles')
+<style>
+    .symbol {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.475rem;
+    }
+    .symbol-50px {
+        width: 50px;
+        height: 50px;
+    }
+    .symbol-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        width: 100%;
+        height: 100%;
+    }
+    .text-hover-danger:hover {
+        color: #dc3545 !important;
+    }
+    .table-hover tbody tr:hover {
+        background-color: rgba(220, 53, 69, 0.05) !important;
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script>
+    // Initialize tooltips
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>
+@endpush
 @endsection
