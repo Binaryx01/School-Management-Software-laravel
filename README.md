@@ -55,8 +55,8 @@ php artisan serve
 
 Use the following credentials to access the admin dashboard (if seeders are enabled):
 
-Email: admin@example.com
-Password: password
+Email: admin@gmail.com
+Password:admin
 
 ✅ Features (So Far)
 
